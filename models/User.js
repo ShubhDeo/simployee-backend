@@ -47,8 +47,4 @@ const UserSchema = new mongoose.Schema({
   ],
 });
 
-<<<<<<< HEAD
 module.exports = mongoose.model("User", UserSchema);
-=======
-module.exports = mongoose.model("User", UserSchema);
->>>>>>> shubh
