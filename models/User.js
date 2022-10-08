@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const Task = require("./Task")
 const { v4 } = require("uuid");
 
 const TaskSchema = mongoose.Schema({
@@ -10,7 +9,7 @@ const TaskSchema = mongoose.Schema({
   description: {
     type: String,
     max: 80,
-    require: true,
+    required: true,
   },
   startTime: {
     type: Date,
@@ -18,7 +17,11 @@ const TaskSchema = mongoose.Schema({
   },
   timeTaken: {
     type: String, //Minutes
-    require: true,
+    required: true,
+  },
+  taskType: {
+    type: Number,
+    required: true
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

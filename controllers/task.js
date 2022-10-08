@@ -5,7 +5,7 @@ const asyncHandler = require("express-async-handler");
 // @route POST /api/task/add
 // @access Protected route
 const addTask = asyncHandler(async (req, res) => {
-  const { description, startTime, timeTaken } = req.body;
+  const { description, startTime, timeTaken, taskType } = req.body;
 
   try {
     if (description.length > 80 || description.length === 0 || !timeTaken) {
@@ -17,6 +17,8 @@ const addTask = asyncHandler(async (req, res) => {
         user: user._id,
         description,
         timeTaken,
+        taskType,
+        startTime
       });
 
       const createdTask = await task.save();
