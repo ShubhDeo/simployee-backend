@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const {loginRouter} = require("./routes/login");
+const {loginRouter} = require("./routes/loginRoutes");
+const {userRouter} = require('./routes/userRoutes')
 const connectDB = require('./config/db')
 
 
@@ -17,5 +18,6 @@ connectDB();
 const PORT = process.env.PORT || 8800;
 
 app.use("/api/login", loginRouter);
+app.use("/api/user", userRouter);
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));

@@ -39,9 +39,24 @@ const authUser =  asyncHandler(async (req, res) => {
 })
 
 
-const test = asyncHandler( async (req, res) => {
-    res.send("Get req /api/login")
+const getUser = asyncHandler( async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        const user = await User.findById(id).select('-password');
+
+
+        if(!user || !user.isActivated) {
+            res.status(404).send("User not found");
+        }else {
+            res.status(200).json(user);
+        }
+
+    } catch (error) {
+        res.status(400).send(error);
+    }
+
 })
 
 
-module.exports = {authUser, test};
+module.exports = {authUser, getUser};
