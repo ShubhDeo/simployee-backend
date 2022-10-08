@@ -12,16 +12,15 @@ const authUser =  asyncHandler(async (req, res) => {
     
     const user = await User.findOne({ email })
 
-    if(!user) {
-        res.status(401).send("Invalid email");
+    if(!user && !user.isActivated) {
+        res.status(401).send("Invalid credentials");
     }
     
-
     const isValid = bcrypt.compareSync(password, user.password);
     
 
     if(isValid) {
-        res.json({
+        res.status(200).json({
             _id: user._id,
             username: user.username,
             email: user.email,
