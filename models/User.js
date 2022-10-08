@@ -1,7 +1,32 @@
 const mongoose = require("mongoose");
-const Task = require("./Task")
+// const Task = require("./Task")
+const { v4 } = require("uuid");
 
-const UserSchema = new mongoose.Schema({
+const TaskSchema = mongoose.Schema({
+  _id: {
+    type: String,
+    default: v4,
+  },
+  description: {
+    type: String,
+    max: 80,
+    require: true,
+  },
+  startTime: {
+    type: Date,
+    default: Date.now,
+  },
+  timeTaken: {
+    type: String, //Minutes
+    require: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+});
+
+const UserSchema = mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -39,12 +64,9 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  tasks: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Task',
-    },
-  ],
+  tasks: [TaskSchema],
 });
 
-module.exports = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", UserSchema);
+const Task = mongoose.model("Task", TaskSchema);
+module.exports = { User, Task };
