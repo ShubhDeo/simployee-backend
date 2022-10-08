@@ -16,5 +16,6 @@ const PORT = process.env.PORT || 8800;
 
 app.use("/api/login", loginRouter);
 app.use("/api/task", taskRouter);
+app.use("/api/user", userRouter);
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
