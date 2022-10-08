@@ -1,4 +1,4 @@
-const User = require("../models/User")
+const {User} = require("../models/User")
 const generateToken = require("../utils/generateToken")
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
@@ -161,6 +161,7 @@ const deactivateUser = asyncHandler( async (req, res) => {
         }
 
     } catch (error) {
+        console.log(error)
         res.status(400).send(error);
     }
 
