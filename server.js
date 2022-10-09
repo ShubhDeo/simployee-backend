@@ -4,9 +4,11 @@ const { loginRouter } = require("./routes/loginRoutes");
 const { taskRouter } = require("./routes/taskRoutes");
 const { userRouter } = require("./routes/userRoutes");
 const connectDB = require("./config/db");
+const cors = require("cors");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 dotenv.config();
 
