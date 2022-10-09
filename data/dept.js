@@ -4,4 +4,11 @@ const department = {
     3 : 'Sales Department',
     4 : 'Technology Department'
 }
-module.exports = department;
+
+const taskType = {
+    1 : 'Break',
+    2 : 'Meeting',
+    3 : 'Work'
+}
+
+module.exports = {department, taskType};
