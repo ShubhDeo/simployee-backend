@@ -5,14 +5,21 @@ const asyncHandler = require("express-async-handler");
 // @route POST /api/task/add
 // @access Protected route
 const addTask = asyncHandler(async (req, res) => {
-  const { description, startTime, timeTaken, taskType } = req.body;
-
+  let { description, startTime, timeTaken, taskType } = req.body;
+  startTime=new Date(startTime);
+  const month=startTime.getMonth();
+  const date=startTime.getDate()+1;
+  const year=startTime.getFullYear();
+  startTime=new Date(year,month,date);
+  startTime.setUTCHours(0,0,0,0);
+  //console.log(date,month,year);
   try {
     if (description.length > 80 || description.length === 0 || !timeTaken) {
       res.status(400).send("Invalid Input, Cannot add task");
       return;
     } else {
       let user = await User.findById(req.user._id).populate("tasks").exec();
+      // console.log(user)
       let task = new Task({
         user: user._id,
         description,
@@ -23,7 +30,11 @@ const addTask = asyncHandler(async (req, res) => {
 
       const createdTask = await task.save();
 
+      // console.log(createdTask);
+
       user.tasks.push(createdTask);
+
+      console.log(user);
 
       await user.save();
 
@@ -55,6 +66,63 @@ const fetchTask = asyncHandler(async (req, res) => {
   }
 });
 
+
+const fetchTaskByDate = asyncHandler(async (req, res) => {
+  let { user_id,date } = req.params;
+  date=new Date(date);
+  date.setUTCHours(0,0,0,0);
+
+  try {
+    console.log(new Date(Date.now() - 7* 60 * 60 * 24 * 1000));
+    const tasks = await Task.find({
+      user: user_id, 
+      startTime: {
+        //'$lte': Date.now(),
+        '$eq': date
+        //'$lte': Date.now()
+      }
+    });
+
+    if (tasks.length==0) {
+      res.status(404).send("Tasks not found");
+      return;
+    } else {
+       res.status(200).json(tasks);
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+
+const fetchTaskByWeek = asyncHandler(async (req, res) => {
+  let { user_id } = req.params;
+  let date=new Date(Date.now() - 7* 60 * 60 * 24 * 1000);
+  date.setUTCHours(0,0,0,0);
+
+  try {
+    //console.log(new Date(Date.now() - 7* 60 * 60 * 24 * 1000));
+    const tasks = await Task.find({
+      user: user_id, 
+      startTime: {
+        //'$lte': Date.now(),
+        '$gte': date
+        //'$lte': Date.now()
+      }
+    });
+
+    if (tasks.length==0) {
+      res.status(404).send("Tasks not found");
+      return;
+    } else {
+       res.status(200).json(tasks);
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+
 // @desc delete a task
 // @route DELETE /api/task/delete/:task_id
 // @access Protected route
@@ -85,4 +153,4 @@ const deleteTask = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addTask, fetchTask, deleteTask };
+module.exports = { addTask, fetchTask, deleteTask, fetchTaskByDate,fetchTaskByWeek };
