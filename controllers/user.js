@@ -12,7 +12,7 @@ const authUser =  asyncHandler(async (req, res) => {
     
     const user = await User.findOne({ email })
 
-    if(!user && !user.isActivated) {
+    if(!user || !user.isActivated) {
         res.status(401).send("Invalid credentials");
     }
     
