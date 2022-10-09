@@ -168,5 +168,17 @@ const deactivateUser = asyncHandler( async (req, res) => {
 })
 
 
+const getAllUser = asyncHandler( async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
 
-module.exports = {authUser, getUser , addUser, updateUser, deactivateUser};
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error);
+    }
+})
+
+
+
+module.exports = {authUser, getUser , addUser, updateUser, deactivateUser, getAllUser};
