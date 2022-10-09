@@ -163,48 +163,21 @@ const deactivateUser = asyncHandler(async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-module.exports = { authUser, getUser, addUser, updateUser, deactivateUser };
-=======
-})
+const getAllUser = asyncHandler(async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
 
-
-const deactivateUser = asyncHandler( async (req, res) => {
-    const {id} = req.params;
-
-    try {
-        const user = await User.findById(id).select('-password');
-
-
-        if(!user || !user.isActivated) {
-            res.status(404).send("User not found");
-
-        }else {
-            user.isActivated = false;
-            await user.save();
-            res.status(200).send("User deactivated.")
-        }
-
-    } catch (error) {
-        console.log(error)
-        res.status(400).send(error);
-    }
-
-})
-
-
-const getAllUser = asyncHandler( async (req, res) => {
-    try {
-        const users = await User.find();
-        res.status(200).json(users);
-
-    } catch (error) {
-        console.log(error)
-        res.status(400).send(error);
-    }
-})
-
-
-
-module.exports = {authUser, getUser , addUser, updateUser, deactivateUser, getAllUser};
->>>>>>> 0f11caddf8f2e73dd171c7c6f48cc8006d5904c7
+module.exports = {
+  authUser,
+  getUser,
+  addUser,
+  updateUser,
+  deactivateUser,
+  getAllUser,
+};
