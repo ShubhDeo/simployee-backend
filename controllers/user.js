@@ -121,7 +121,7 @@ const updateUser = asyncHandler(async (req, res) => {
       return;
     }
 
-    if(password.length!==0) {
+    if(password&&password.length!==0) {
        user.password = bcrypt.hashSync(password, 10);
     }
 
@@ -146,6 +146,7 @@ const updateUser = asyncHandler(async (req, res) => {
       token: generateToken(updatedUser._id),
     });
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 });

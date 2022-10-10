@@ -69,11 +69,13 @@ const fetchTask = asyncHandler(async (req, res) => {
 
 const fetchTaskByDate = asyncHandler(async (req, res) => {
   let { user_id,date } = req.params;
+  console.log(date);
   date=new Date(date);
   date.setUTCHours(0,0,0,0);
+  console.log(date);
 
   try {
-    console.log(new Date(Date.now() - 7* 60 * 60 * 24 * 1000));
+    //console.log(new Date(Date.now() - 7* 60 * 60 * 24 * 1000));
     const tasks = await Task.find({
       user: user_id, 
       startTime: {
@@ -84,7 +86,7 @@ const fetchTaskByDate = asyncHandler(async (req, res) => {
     });
 
     if (tasks.length==0) {
-      res.status(404).send("Tasks not found");
+      res.status(400).send("Tasks not found");
       return;
     } else {
        res.status(200).json(tasks);
