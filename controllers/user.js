@@ -58,7 +58,7 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 const addUser = asyncHandler(async (req, res) => {
-  const {
+  let {
     username,
     email,
     password,
@@ -68,11 +68,14 @@ const addUser = asyncHandler(async (req, res) => {
     isAdmin,
   } = req.body;
 
+
   try {
     const userExists = await User.findOne({ email });
     if (userExists) {
       res.status(400).send("User already exists");
     }
+
+    password = bcrypt.hashSync(password, 10)
 
     const user = await User.create({
       username,
@@ -118,9 +121,12 @@ const updateUser = asyncHandler(async (req, res) => {
       return;
     }
 
+    if(password.length!==0) {
+       user.password = bcrypt.hashSync(password, 10);
+    }
+
     user.username = username || user.username;
     user.email = email || user.email;
-    user.password = password || user.password;
     user.contact = contact || user.contact;
     user.joiningDate = joiningDate || user.joiningDate;
     user.department = department || user.department;
