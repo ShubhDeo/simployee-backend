@@ -21,7 +21,7 @@ const TaskSchema = mongoose.Schema({
   },
   taskType: {
     type: Number,
-    required: true
+    required: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -35,7 +35,7 @@ const UserSchema = mongoose.Schema({
     required: true,
     min: 3,
     max: 20,
-    unique: true,
+    // unique: true,
   },
   email: {
     type: String,
